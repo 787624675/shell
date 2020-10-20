@@ -61,22 +61,59 @@ runcmd(struct cmd *cmd)
     ecmd = (struct execcmd*)cmd;
     if(ecmd->argv[0] == 0)
       _exit(0);
-    fprintf(stderr, "exec not implemented\n");
+    // fprintf(stderr, "exec not implemented\n");
     // Your code here ...
+    int signal = execv(ecmd->argv[0], ecmd->argv);
+    if(signal == -1){
+        // Failed to run on this dir, run in /bin/ instead
+        char run_path[30] = "/bin/";
+        strcat(run_path, ecmd->argv[0]);
+        signal = execv(run_path, ecmd->argv);
+        if(signal == -1){
+            // In task 3, there is another path usr/bin, so this is added:
+	    char run_path_1[30] = "/usr/bin/";
+            strcat(run_path_1, ecmd->argv[0]);
+            signal = execv(run_path_1, ecmd->argv);
+            if(signal == -1){
+                perror("exec failed\n");
+            }
+            
+        }
+        
+    }
     break;
 
   case '>':
   case '<':
     rcmd = (struct redircmd*)cmd;
-    fprintf(stderr, "redir not implemented\n");
+    // fprintf(stderr, "redir not implemented\n");
     // Your code here ...
+    close(rcmd->fd);  // '>':fd = 0; '<':fd = 1 
+    int signal_1 = open(rcmd->file,rcmd->flags, 0777);
+    if(signal_1 < 0){
+        fprintf(stderr,"Failed to open file %s\n", rcmd->file);
+    }
     runcmd(rcmd->cmd);
     break;
 
   case '|':
     pcmd = (struct pipecmd*)cmd;
-    fprintf(stderr, "pipe not implemented\n");
+    // fprintf(stderr, "pipe not implemented\n");
     // Your code here ...
+    int p[2];
+    if(pipe(p) < 0){
+        fprintf(stderr,"Failed to pope\n");
+    }
+    if(fork1() == 0){
+        dup2(p[1], 1);
+        close(p[0]);
+        runcmd(pcmd->left);
+    }else{
+        dup2(p[0],0);
+        close(p[1]);
+        runcmd(pcmd->right);
+    }
+    
     break;
   }    
   _exit(0);
