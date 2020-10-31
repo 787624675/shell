@@ -1,7 +1,7 @@
 #define KEY_MUTEX 100
 #define KEY_APPLE 103
 #define KEY_ORANGE 104
-#define KEY_TOTAL 105
+#define KEY_EMPTY 105
 #define KEY_SHM	200
 #define BUFFER_SIZE 10
 typedef int semaphore;
@@ -20,7 +20,7 @@ struct shared_use_st {
 	int cur;
 	int apple;
 	int orange;
-	int total;
+	int empty;
 };
 extern int sem_p(semaphore sem_id);
 extern int sem_v(semaphore sem_id);

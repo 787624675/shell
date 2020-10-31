@@ -13,9 +13,7 @@ int main(int argc, char *argv[])
     // i is the iterator to memset the buffer later at row 67
     int i,mother_pid,father_pid,son_pid, daughter_pid, shmid;
     
-    int apple, orange, total;
-    
-	semaphore mutex;
+	semaphore mutex, apple, orange, empty;
     union semun sem_union;
 	void *shared_memory = (void *)0;
 	struct shared_use_st *shared_stuff;
@@ -31,7 +29,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
-    if ( (full = semget((key_t)KEY_TOTAL,1,0666|IPC_CREAT)) == -1 ) {
+    if ( (full = semget((key_t)KEY_EMPTY,1,0666|IPC_CREAT)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
@@ -40,28 +38,31 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-    	sem_union.val = 1;
-        // bind semaphore to the variaties
-    	if (semctl(mutex, 0, SETVAL, sem_union) == -1) {
+    sem_union.val = 1;
+    // bind semaphore to the variaties
+    if (semctl(mutex, 0, SETVAL, sem_union) == -1) {
 		fprintf(stderr,"Failed to set semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
 
-    	sem_union.val = 0;
-    	if (semctl(apple, 0, SETVAL, sem_union) == -1) {
+    sem_union.val = 0;
+    if (semctl(apple, 0, SETVAL, sem_union) == -1) {
 		fprintf(stderr,"Failed to set semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
-    	if (semctl(orange, 0, SETVAL, sem_union) == -1) {
+    sem_union.val = 0;
+    if (semctl(orange, 0, SETVAL, sem_union) == -1) {
 		fprintf(stderr,"Failed to set semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
-        if (semctl(total, 0, SETVAL, sem_union) == -1) {
+    // empty is 2
+    sem_union.val = 2;
+    if (semctl(empty, 0, SETVAL, sem_union) == -1) {
 		fprintf(stderr,"Failed to set semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
 
-    	sem_union.val = BUFFER_SIZE;
+    sem_union.val = BUFFER_SIZE;
     
 
 	if ( (shared_memory = shmat(shmid,(void *)0,0) ) == (void *)-1) {

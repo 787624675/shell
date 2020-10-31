@@ -10,13 +10,13 @@
 // 改自consumer.c
 int main(int argc, char *argv[])
 {
-    int i,item,shmid;
+    int i,shmid;
 	semaphore mutex;
     union semun sem_union;
 	void *shared_memory = (void *)0;
 	struct shared_use_st *shared_stuff;
 	// 以下是新定义的变量
-	int orange;
+	int orange, empty;
 	// 尝试获得独立运行的 semaphore
 	if ( (mutex=semget((key_t)KEY_MUTEX,1,IPC_EXCL)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
@@ -40,14 +40,14 @@ int main(int argc, char *argv[])
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
-	if ( (mutex=semget((key_t)KEY_TOTAL,1,IPC_EXCL)) == -1 ) {
+	if ( (mutex=semget((key_t)KEY_EMPTY,1,IPC_EXCL)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
 
 	
 	// Here I do not use loop
-		sem_p(orange);
+		sem_p(empty);
 		sem_p(mutex);
 		//item = remove_item();
 		item = shared_stuff->buffer[shared_stuff->lo];
