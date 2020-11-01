@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
 	for(i = 0; i<30;i++){
 		sleep(1);
-		printf("The mother goes to fetch orange");
+		printf("The mother goes to fetch orange\n");
 		sem_p(empty);
 		sem_p(mutex);
 		shared_stuff->orange_num += 1;
