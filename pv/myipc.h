@@ -15,12 +15,8 @@ union semun {
 struct shared_use_st {
 	int buffer[BUFFER_SIZE];
 	//int count;
-	int lo;     // orange
-	int hi;    // orange
-	int cur;   // orange
-	int lo_1;  // apple
-	int hi_1;  // apple
-	int cur_1; // apple
+	int apple_num;
+	int orange_num;
 };
 extern int sem_p(semaphore sem_id);
 extern int sem_v(semaphore sem_id);

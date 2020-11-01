@@ -71,13 +71,8 @@ int main(int argc, char *argv[])
 	}
 	shared_stuff = (struct shared_use_st *)shared_memory;
 
-	for(i=0;i<BUFFER_SIZE;i++)
-	{
-		shared_stuff->buffer[i] = 0;
-	}
-	shared_stuff -> lo = 0;
-	shared_stuff -> hi = 0;
-	shared_stuff -> cur = 0;
+	shared_stuff -> apple_num = 0;
+	shared_stuff -> orange_num = 0;
 
   	exit(EXIT_SUCCESS);
 }

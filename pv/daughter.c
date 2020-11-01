@@ -46,19 +46,12 @@ int main(int argc, char *argv[])
 	}
 
 	for(i=0;i<30;i++){
-	// Here I do not use loop
 		sem_p(apple);
 		sem_p(mutex);
-		//item = remove_item();
-		item = shared_stuff->buffer[shared_stuff->lo];
-		(shared_stuff->buffer)[(shared_stuff->lo)]=0;
-		(shared_stuff->lo) = ((shared_stuff->lo)+1) % BUFFER_SIZE;
-		printf("The daughter removes apple numbered %d\n",item);
-		//display_buffer();
+		shared_stuff->apple_num -= 1;
+		printf("The daughter removes apple, now the number of apple is %d\n",shared_stuff->apple_num);
 		sem_v(mutex);
 		sem_v(empty);
-		//consume_item(item);
-		printf("The daughter has apple numbered %d\n",item);
 		sleep(2);
 	}
 

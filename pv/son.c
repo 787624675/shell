@@ -45,21 +45,13 @@ int main(int argc, char *argv[])
 	}
 
 	for(i =0; i<30; i++){
-	// Here I do not use loop
 		sem_p(orange);
 		sem_p(mutex);
-		//item = remove_item();
-		item = shared_stuff->buffer[shared_stuff->lo];
-		(shared_stuff->buffer)[(shared_stuff->lo)]=0;
-		(shared_stuff->lo) = ((shared_stuff->lo)+1) % BUFFER_SIZE;
-		printf("The son is removing orange numbered %d\n",item);
-		//display_buffer();
+		shared_stuff->orange_num -= 1;
+		printf("The son get an orange, now the number of orange is %d\n",shared_stuff->orange_num);
 		sem_v(mutex);
 		sem_v(orange);
-		//consume_item(item);
-		printf("The son is having orange numbered %d\n",item);
 		sleep(2);
-	
 	}
     if (shmdt(shared_memory) == -1) {
     	fprintf(stderr, "shmdt failed\n"); 
