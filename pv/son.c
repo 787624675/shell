@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 		shared_stuff->orange_num -= 1;
 		printf("The son get an orange, now the number of orange is %d\n",shared_stuff->orange_num);
 		sem_v(mutex);
-		sem_v(orange);
+		sem_v(empty);
 		sleep(2);
 	}
     if (shmdt(shared_memory) == -1) {
