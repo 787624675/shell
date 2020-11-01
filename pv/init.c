@@ -57,13 +57,12 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
     // empty is 2
-    sem_union.val = 2;
+    sem_union.val =2;
     if (semctl(empty, 0, SETVAL, sem_union) == -1) {
 		fprintf(stderr,"Failed to set semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
 
-    sem_union.val = BUFFER_SIZE;
     
 
 	if ( (shared_memory = shmat(shmid,(void *)0,0) ) == (void *)-1) {

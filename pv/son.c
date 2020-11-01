@@ -52,12 +52,12 @@ int main(int argc, char *argv[])
 		item = shared_stuff->buffer[shared_stuff->lo];
 		(shared_stuff->buffer)[(shared_stuff->lo)]=0;
 		(shared_stuff->lo) = ((shared_stuff->lo)+1) % BUFFER_SIZE;
-		printf("The son is removing orange %d\n",item);
+		printf("The son is removing orange numbered %d\n",item);
 		//display_buffer();
 		sem_v(mutex);
 		sem_v(orange);
 		//consume_item(item);
-		printf("The son is having orange %d\n",item);
+		printf("The son is having orange numbered %d\n",item);
 		sleep(2);
 	
 	}
