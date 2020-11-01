@@ -49,18 +49,18 @@ int main(int argc, char *argv[])
 	// use loop
         item = ++(shared_stuff->cur_1);
 		sleep(1);
-		printf("The father is fetching apple %d\n",item);
+		printf("The father is fetching apple numbered %d\n",item);
 		sem_p(empty);
 		sem_p(mutex);
 		//item = remove_item();
-		(shared_stuff->buffer)[(shared_stuff->hi_1)]=item;
-		(shared_stuff->hi) = ((shared_stuff->hi_1)+1) % BUFFER_SIZE;
-		printf("The father is inserting orange %d\n",item);
+		(shared_stuff->buffer)[(shared_stuff->hi)]=item;
+		(shared_stuff->hi) = ((shared_stuff->hi)+1) % BUFFER_SIZE;
+		printf("The father is inserting apple numbered %d\n",item);
 		//display_buffer();
 		sem_v(mutex);
 		sem_v(apple);
 		//consume_item(item);
-		printf("The father has placed an apple %d\n",item);
+		printf("The father has placed an apple numbered %d\n",item);
 		sleep(2);
 	}
 

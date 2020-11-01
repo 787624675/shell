@@ -50,15 +50,15 @@ int main(int argc, char *argv[])
 		sem_p(apple);
 		sem_p(mutex);
 		//item = remove_item();
-		apple = shared_stuff->buffer[shared_stuff->lo_1];
-		(shared_stuff->buffer)[(shared_stuff->lo_1)]=0;
-		(shared_stuff->lo) = ((shared_stuff->lo_1)+1) % BUFFER_SIZE;
-		printf("The daughter removes apple %d\n",item);
+		item = shared_stuff->buffer[shared_stuff->lo];
+		(shared_stuff->buffer)[(shared_stuff->lo)]=0;
+		(shared_stuff->lo) = ((shared_stuff->lo)+1) % BUFFER_SIZE;
+		printf("The daughter removes apple numbered %d\n",item);
 		//display_buffer();
 		sem_v(mutex);
 		sem_v(empty);
 		//consume_item(item);
-		printf("The daughter has apple %d\n",item);
+		printf("The daughter has apple numbered %d\n",item);
 		sleep(2);
 	}
 
