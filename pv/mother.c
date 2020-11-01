@@ -52,12 +52,11 @@ int main(int argc, char *argv[])
 		printf("The mother is fetching orange %d\n",item);
 		sem_p(empty);
 		sem_p(mutex);
-		//item = remove_item();
+		
 		(shared_stuff->buffer)[(shared_stuff->hi)]=item;
 		(shared_stuff->hi) = ((shared_stuff->hi)+1) % BUFFER_SIZE;
 		printf("The mother is inserting orange %d\n",item);
 		
-		//display_buffer();
 		sem_v(mutex);
 		sem_v(orange);
 		//consume_item(item);

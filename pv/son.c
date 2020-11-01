@@ -45,8 +45,6 @@ int main(int argc, char *argv[])
 	}
 
 	for(i =0; i<30; i++){
-
-	
 	// Here I do not use loop
 		sem_p(orange);
 		sem_p(mutex);
