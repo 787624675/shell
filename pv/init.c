@@ -21,15 +21,16 @@ int main(int argc, char *argv[])
 	if ( (mutex=semget((key_t)KEY_MUTEX,1,0666|IPC_CREAT)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
-	if ( (full = semget((key_t)KEY_APPLE,1,0666|IPC_CREAT)) == -1 ) {
+	}
+	if ( (apple = semget((key_t)KEY_APPLE,1,0666|IPC_CREAT)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
-    if ( (full = semget((key_t)KEY_ORANGE,1,0666|IPC_CREAT)) == -1 ) {
+    if ( (orange = semget((key_t)KEY_ORANGE,1,0666|IPC_CREAT)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
-    if ( (full = semget((key_t)KEY_EMPTY,1,0666|IPC_CREAT)) == -1 ) {
+    if ( (empty = semget((key_t)KEY_EMPTY,1,0666|IPC_CREAT)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}

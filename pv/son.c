@@ -11,12 +11,11 @@
 int main(int argc, char *argv[])
 {
     int i,item,shmid;
-	semaphore mutex;
+	semaphore mutex,  orange, empty;
     union semun sem_union;
 	void *shared_memory = (void *)0;
 	struct shared_use_st *shared_stuff;
 	// 以下是新定义的变量
-	int orange;
 	// 尝试获得独立运行的 semaphore
 	if ( (mutex=semget((key_t)KEY_MUTEX,1,IPC_EXCL)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
@@ -36,14 +35,16 @@ int main(int argc, char *argv[])
 	shared_stuff = (struct shared_use_st *)shared_memory;
 	// 以下是新加入的 semget 及其错误处理
 	// 儿子只需要拿到 orange 的semaphore
-	if ( (mutex=semget((key_t)KEY_ORANGE,1,IPC_EXCL)) == -1 ) {
+	if ( (orange=semget((key_t)KEY_ORANGE,1,IPC_EXCL)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
-	if ( (mutex=semget((key_t)KEY_TOTAL,1,IPC_EXCL)) == -1 ) {
+	if ( (empty=semget((key_t)KEY_EMPTY,1,IPC_EXCL)) == -1 ) {
 		fprintf(stderr,"Failed to create semaphore!"); 
 		exit(EXIT_FAILURE);
 	}
+
+	for(i =0; i<30; i++){
 
 	
 	// Here I do not use loop
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
 		printf("The son is having orange %d\n",item);
 		sleep(2);
 	
-
+	}
     if (shmdt(shared_memory) == -1) {
     	fprintf(stderr, "shmdt failed\n"); 
 		exit(EXIT_FAILURE);
