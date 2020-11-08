@@ -19,6 +19,9 @@ int keys[NKEYS];
 int nthread = 1;
 volatile int done;
 
+// Here declears the variable array of the lock
+pthread_mutex_t bucket_locks[NBUCKET];
+
 
 double
 now()
@@ -56,7 +59,9 @@ static
 void put(int key, int value)
 {
   int i = key % NBUCKET;
+  pthread_mutex_lock(&bucket_locks[i]);
   insert(key, value, &table[i], table[i]);
+  pthread_mutex_unlock(&bucket_locks[i]);
 }
 
 static struct entry*
@@ -109,6 +114,11 @@ main(int argc, char *argv[])
   void *value;
   long i;
   double t1, t0;
+
+  // Init the lock
+  for(i = 0; i < NBUCKET; i++){
+    pthread_mutex_init(&bucket_locks[i], NULL);
+  }
 
   if (argc < 2) {
     fprintf(stderr, "%s: %s nthread\n", argv[0], argv[0]);
