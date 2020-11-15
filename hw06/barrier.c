@@ -27,7 +27,17 @@ barrier_init(void)
 static void 
 barrier()
 {
-  bstate.round++;
+  pthread_mutex_lock(&bstate.barrier_mutex);                                      //对临界区进行加锁，barrier_mutex是开头定义的信号量
+  bstate.nthread++;                                                                                //将到达当前barrier的线程的数量加一
+  if (bstate.nthread == nthread) {                                                           //如果所有的线程都到达了当前barrier
+    pthread_cond_broadcast(&bstate.barrier_cond);                             //针对barrier_cond这个环境变量广播，表示激活所有线程
+    bstate.nthread = 0;
+    bstate.round++;
+  }
+  else {
+    pthread_cond_wait(&bstate.barrier_cond, &bstate.barrier_mutex);//当还有线程没有到达barrier时，释放互斥锁，然后休眠
+  }
+  pthread_mutex_unlock(&bstate.barrier_mutex);                                //释放互斥锁
 }
 
 static void *
