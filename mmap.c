@@ -35,12 +35,25 @@ calculate_sqrts(double *sqrt_pos, int start, int nr)
 static void
 handle_sigsegv(int sig, siginfo_t *si, void *ctx)
 {
-  // Your code here.
+   // Your code here.
+   static double *va = NULL;
+   int i, pos;
+   uintptr_t pg;
 
-  // replace these three lines with your implementation
-  uintptr_t fault_addr = (uintptr_t)si->si_addr;
-  printf("oops got SIGSEGV at 0x%lx\n", fault_addr);
-  exit(EXIT_FAILURE);
+   pg = align_down((uint64_t)si->si_addr, page_size);
+   if (va)
+    munmap(va, page_size);
+   va = mmap((void *)pg, page_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+  if (pg <= (uint64_t)sqrts) {
+    pos = 0;
+  } else {
+    pos = (pg - (uint64_t)sqrts) / 8;
+  }
+
+  for (i = 0; i < page_size / 8; i++) {
+    calculate_sqrts(&va[i], pos + i, 1);
+  }
 }
 
 static void
